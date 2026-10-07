@@ -28,7 +28,7 @@ G4 = "Session boxes (each fixed at its own start)"
 showW1  = input.bool(true, "AM 9:30-11:30", group = G4)
 showW2  = input.bool(true, "Midday 11:30-13:30", group = G4) and not minimal
 showW3  = input.bool(true, "PM 13:30-16:00", group = G4) and not minimal
-sessCol = input.color(#c9a227, "Box color", group = G4)
+sessCol = input.color(#7a8ca8, "Box color", group = G4)
 sessDays = input.int(1, "Days of session / OR boxes to keep", minval = 1, maxval = 5, group = G4)
 
 G5 = "Opening range (9:30 NY)"
@@ -59,17 +59,13 @@ lblBig     = input.bool(true, "bigger", group = G2, inline = "lbl")
 tblPos     = input.string("Top right", "Table position", options = ["Top right", "Bottom right", "Top left", "Bottom left"], group = G2)
 
 G3 = "Extra layers (off = cleaner chart)"
-showWeekly = input.bool(false, "Week 80% lines", group = G3)
-showMonth  = input.bool(false, "Month 80% lines", group = G3)
 show4H     = input.bool(false, "4H block 80% lines (18/22/02/06/10/14 NY)", group = G3)
 showSess   = input.bool(false, "Prior day / Asia / London / overnight levels", group = G3)
-wCol       = input.color(#8f7ae0, "Week", group = G3, inline = "oc")
-mCol       = input.color(#d0a040, "Month", group = G3, inline = "oc")
+asiaStat   = input.string("18:00-0:00", "Asia stat boxes", options = ["18:00-0:00", "20:00-0:00", "Off"], group = G3, inline = "as")
+asiaCol    = input.color(#7a8ca8, "", group = G3, inline = "as")
 hCol       = input.color(#6c8fb8, "4H", group = G3, inline = "oc")
 h4Style    = input.string("Solid", "4H line", options = ["Solid", "Dashed", "Dotted"], group = G3, inline = "h4s")
 h4W        = input.int(2, "width", minval = 1, maxval = 4, group = G3, inline = "h4s")
-wmStyle    = input.string("Dashed", "Week / month line", options = ["Solid", "Dashed", "Dotted"], group = G3, inline = "wms")
-wmW        = input.int(1, "width", minval = 1, maxval = 4, group = G3, inline = "wms")
 
 G0 = "Advanced"
 symOverride = input.string("Auto", "Statistics set", options = ["Auto", "NQ", "ES", "YM", "GC"], group = G0, tooltip = "Auto reads the chart root (MNQ/NQ, MES/ES, MYM/YM, MGC/GC).")
@@ -112,61 +108,13 @@ f_dq_dn(int s) =>
         3 => array.from(0.3546, 0.6057, 0.8120, 1.1663, 1.4942)
 
 // weekly quantiles p70/p80/p90 by open location: 0 below prev low, 1 inside, 2 above prev high
-f_wq_up0(int s) =>
-    switch s
-        0 => array.from(0.6872, 0.8247, 1.0387)
-        1 => array.from(0.7256, 0.8718, 1.0386)
-        2 => array.from(0.6675, 0.8452, 1.0732)
-        3 => array.from(0.6357, 0.8627, 1.1858)
 
-f_wq_dn0(int s) =>
-    switch s
-        0 => array.from(0.6529, 0.8231, 1.1133)
-        1 => array.from(0.6986, 0.8749, 1.1457)
-        2 => array.from(0.6729, 0.9074, 1.2200)
-        3 => array.from(0.6706, 0.8600, 1.2104)
 
-f_wq_up1(int s) =>
-    switch s
-        0 => array.from(0.6621, 0.7929, 1.0082)
-        1 => array.from(0.6415, 0.7833, 0.9612)
-        2 => array.from(0.6529, 0.8127, 1.0157)
-        3 => array.from(0.6636, 0.8736, 1.1811)
 
-f_wq_dn1(int s) =>
-    switch s
-        0 => array.from(0.6216, 0.8022, 1.0941)
-        1 => array.from(0.6705, 0.8504, 1.1239)
-        2 => array.from(0.6338, 0.8312, 1.1392)
-        3 => array.from(0.6410, 0.8435, 1.1280)
 
-f_wq_up2(int s) =>
-    switch s
-        0 => array.from(0.6293, 0.7640, 0.9862)
-        1 => array.from(0.6082, 0.7254, 0.9537)
-        2 => array.from(0.5953, 0.7375, 0.9413)
-        3 => array.from(0.6716, 0.9425, 1.3424)
 
-f_wq_dn2(int s) =>
-    switch s
-        0 => array.from(0.6345, 0.8156, 1.1051)
-        1 => array.from(0.6258, 0.8035, 1.0441)
-        2 => array.from(0.6321, 0.7969, 1.0793)
-        3 => array.from(0.6605, 0.8704, 1.1326)
 
-f_mq_up(int s) =>
-    switch s
-        0 => array.from(0.7426, 0.8378, 1.0883)
-        1 => array.from(0.6278, 0.7805, 0.9970)
-        2 => array.from(0.6632, 0.7998, 1.0215)
-        3 => array.from(0.7771, 1.0075, 1.3357)
 
-f_mq_dn(int s) =>
-    switch s
-        0 => array.from(0.5660, 0.7787, 1.1726)
-        1 => array.from(0.6071, 0.8206, 1.3126)
-        2 => array.from(0.5932, 0.8162, 1.0848)
-        3 => array.from(0.5759, 0.7620, 0.9924)
 
 f_h4q_up(int s) =>
     switch s
@@ -288,6 +236,15 @@ f_tagOnMul(int s) =>
         3 => array.from(0.93, 0.91, 0.81, 0.76, 0.56, 1.00, 1.04, 1.05, 1.14, 0.99, 0.85, 1.00, 1.05, 1.13, 1.29, 1.57, 1.48, 1.00)
 
 
+// generated: Asia session reach from its open (x daily HAR), q25/q50/q75/q90 pooled high+low; order: 18-0 other, 18-0 Monday, 20-0 other, 20-0 Monday
+f_asiaZ(int s) =>
+    switch s
+        0 => array.from(0.050, 0.109, 0.196, 0.313, 0.063, 0.142, 0.249, 0.382, 0.038, 0.088, 0.160, 0.257, 0.038, 0.086, 0.163, 0.273)
+        1 => array.from(0.053, 0.110, 0.200, 0.311, 0.063, 0.138, 0.260, 0.387, 0.040, 0.089, 0.162, 0.260, 0.038, 0.088, 0.169, 0.274)
+        2 => array.from(0.052, 0.109, 0.199, 0.312, 0.059, 0.146, 0.266, 0.409, 0.038, 0.085, 0.159, 0.257, 0.037, 0.088, 0.169, 0.273)
+        3 => array.from(0.070, 0.140, 0.239, 0.366, 0.083, 0.174, 0.305, 0.478, 0.057, 0.120, 0.205, 0.328, 0.056, 0.132, 0.240, 0.369)
+
+
 // generated by research/cycle20_live_recheck.py: live tables from Databento hourly 2010-26 (replaces the Yahoo 2024-26 tables)
 
 
@@ -401,8 +358,6 @@ f_or30_ft(int s) =>
 var array<float> BETA  = f_beta(S)
 var array<float> DQU   = f_dq_up(S)
 var array<float> DQD   = f_dq_dn(S)
-var array<float> MQU   = f_mq_up(S)
-var array<float> MQD   = f_mq_dn(S)
 var array<float> HQU   = f_h4q_up(S)
 var array<float> HQD   = f_h4q_dn(S)
 var array<int>   CAL_FOMC = f_cal_FOMC()
@@ -815,8 +770,8 @@ drawSess(string nm, int eMin, array<float> q, int b, string why) =>
     float sc = dHar * (na(ctxMult) ? 1.0 : ctxMult)
     float o = open
     int tE = timestamp("America/New_York", year(time, "America/New_York"), month(time, "America/New_York"), dayofmonth(time, "America/New_York"), int(math.floor(eMin / 60)), eMin % 60)
-    box bu = box.new(time, o + array.get(q, 1) * sc, tE, o + array.get(q, 0) * sc, xloc = xloc.bar_time, border_color = color.new(sessCol, 20), border_width = b == 1 ? 1 : 0, bgcolor = color.new(sessCol, b == 1 ? 78 : 91))
-    box bd = box.new(time, o - array.get(q, 2) * sc, tE, o - array.get(q, 3) * sc, xloc = xloc.bar_time, border_color = color.new(sessCol, 20), border_width = b == -1 ? 1 : 0, bgcolor = color.new(sessCol, b == -1 ? 78 : 91))
+    box bu = box.new(time, o + array.get(q, 1) * sc, tE, o + array.get(q, 0) * sc, xloc = xloc.bar_time, border_color = color.new(sessCol, 35), border_width = 1, bgcolor = color.new(sessCol, b == 1 ? 88 : 96))
+    box bd = box.new(time, o - array.get(q, 2) * sc, tE, o - array.get(q, 3) * sc, xloc = xloc.bar_time, border_color = color.new(sessCol, 35), border_width = 1, bgcolor = color.new(sessCol, b == -1 ? 88 : 96))
     string arrow = b == 1 ? "▲" : b == -1 ? "▼" : ""
     string tip = nm + " box: on 70-90% of sessions since 2010 the " + nm + " high/low stayed inside these distances from the session open (Databento 1m, scaled to the daily range and today's context).\n" + why
     label lb = b == 0 ? na : label.new(time, b == -1 ? o - array.get(q, 3) * sc : o + array.get(q, 1) * sc, nm + " " + arrow, xloc = xloc.bar_time, style = b == -1 ? label.style_label_upper_left : label.style_label_lower_left, color = color.new(color.black, 100), textcolor = lblCol, size = lblBig ? size.normal : size.small, tooltip = tip)
@@ -1950,18 +1905,16 @@ f_drawAmZones() =>
     float scZ = dHar * (na(ctxMult) ? 1.0 : ctxMult)
     float sU = math.max(open + array.get(f_ss_am(S), 1) * scZ, hB)
     float sD = math.min(open - array.get(f_ss_am(S), 3) * scZ, lB)
-    array.push(amzQ, box.new(time, hB, zEnd, hA, xloc = xloc.bar_time, border_width = 0, bgcolor = color.new(amzCol, 82)))
-    array.push(amzQ, box.new(time, lA, zEnd, lB, xloc = xloc.bar_time, border_width = 0, bgcolor = color.new(amzCol, 82)))
-    array.push(amzQ, box.new(time, sU, zEnd, hB, xloc = xloc.bar_time, border_color = color.new(amzCol, 60), border_width = 1, border_style = line.style_dotted, bgcolor = color.new(amzCol, 94)))
-    array.push(amzQ, box.new(time, lB, zEnd, sD, xloc = xloc.bar_time, border_color = color.new(amzCol, 60), border_width = 1, border_style = line.style_dotted, bgcolor = color.new(amzCol, 94)))
-    array.push(amzLb, label.new(time, sU, "90%", xloc = xloc.bar_time, style = label.style_label_right, color = color.new(color.black, 100), textcolor = lblCol, size = lblBig ? size.small : size.tiny, tooltip = "Stretch: the 9:30-11:30 high stayed below this on 90% of mornings (70% at the inner edge of the light zone)."))
-    array.push(amzLb, label.new(time, sD, "90%", xloc = xloc.bar_time, style = label.style_label_right, color = color.new(color.black, 100), textcolor = lblCol, size = lblBig ? size.small : size.tiny, tooltip = "Stretch: the 9:30-11:30 low stayed above this on 90% of mornings."))
-    array.push(amzL, line.new(time, hM, zEnd, hM, xloc = xloc.bar_time, color = color.new(amzCol, 30), style = line.style_dotted))
-    array.push(amzL, line.new(time, lM, zEnd, lM, xloc = xloc.bar_time, color = color.new(amzCol, 30), style = line.style_dotted))
+    array.push(amzQ, box.new(time, hB, zEnd, hA, xloc = xloc.bar_time, border_color = color.new(amzCol, 35), border_width = 1, bgcolor = color.new(amzCol, 93)))
+    array.push(amzQ, box.new(time, lA, zEnd, lB, xloc = xloc.bar_time, border_color = color.new(amzCol, 35), border_width = 1, bgcolor = color.new(amzCol, 93)))
+    array.push(amzL, line.new(time, sU, zEnd, sU, xloc = xloc.bar_time, color = color.new(amzCol, 40), style = line.style_dotted))
+    array.push(amzL, line.new(time, sD, zEnd, sD, xloc = xloc.bar_time, color = color.new(amzCol, 40), style = line.style_dotted))
+    array.push(amzL, line.new(time, hM, zEnd, hM, xloc = xloc.bar_time, color = color.new(amzCol, 0), width = 2))
+    array.push(amzL, line.new(time, lM, zEnd, lM, xloc = xloc.bar_time, color = color.new(amzCol, 0), width = 2))
     string zTip = "Where the 9:30-11:30 high / low usually lands from the 9:30 open: shaded = middle 50% of days, dotted = median, for mornings with this size of overnight range (Databento 2010-26; 2010-18 bands held 45-56% of 2019-26 days)."
-    while array.size(amzQ) > sessDays * 4
+    while array.size(amzQ) > sessDays * 2
         box.delete(array.shift(amzQ))
-    while array.size(amzL) > sessDays * 2
+    while array.size(amzL) > sessDays * 4
         line.delete(array.shift(amzL))
     while array.size(amzLb) > sessDays * 4
         label.delete(array.shift(amzLb))
@@ -2058,37 +2011,6 @@ int hrIdx = (nyHour - 18 + 24) % 24
 // ─────────────────────────────────────────────────────────── week so far (Tue-Fri)
 
 // ─────────────────────────────────────────────────────────── week / month / 4H lines
-drawLvl(int x1, int x2, float y, color c, string txt, string st) =>
-    line.new(x1, y, x2, y, xloc = xloc.bar_time, color = color.new(c, 20), style = st, width = wmW)
-    label.new(x2, y, txt, xloc = xloc.bar_time, style = label.style_label_left, color = color.new(color.black, 100), textcolor = lblCol, size = lblBig ? size.small : size.tiny)
-
-f_blk5() =>
-    int loc = wOpenHTF > pwh ? 2 : wOpenHTF < pwl ? 0 : 1
-    array<float> qu = f_wq_up1(S)
-    array<float> qd = f_wq_dn1(S)
-    if loc == 0
-        qu := f_wq_up0(S)
-        qd := f_wq_dn0(S)
-    else if loc == 2
-        qu := f_wq_up2(S)
-        qd := f_wq_dn2(S)
-    int fri = time_tradingday + 4 * 86400000
-    int wEnd = timestamp("America/New_York", year(fri, "UTC"), month(fri, "UTC"), dayofmonth(fri, "UTC"), 17, 0)
-    drawLvl(time, wEnd, wOpenHTF + array.get(qu, 1) * wSig, wCol, "W80 " + fmtPx(wOpenHTF + array.get(qu, 1) * wSig), f_ls(wmStyle))
-    drawLvl(time, wEnd, wOpenHTF - array.get(qd, 1) * wSig, wCol, "W80 " + fmtPx(wOpenHTF - array.get(qd, 1) * wSig), f_ls(wmStyle))
-    true
-if showWeekly and intraday and timeframe.change("W") and not na(wSig)
-    f_blk5()
-
-f_blk6() =>
-    int y2 = year(time_tradingday, "UTC")
-    int m2 = month(time_tradingday, "UTC")
-    int mEnd = timestamp("America/New_York", m2 == 12 ? y2 + 1 : y2, m2 == 12 ? 1 : m2 + 1, 1, 0, 0)
-    drawLvl(time, mEnd, mOpenHTF + array.get(MQU, 1) * mSig, mCol, "M80 " + fmtPx(mOpenHTF + array.get(MQU, 1) * mSig), f_ls(wmStyle))
-    drawLvl(time, mEnd, mOpenHTF - array.get(MQD, 1) * mSig, mCol, "M80 " + fmtPx(mOpenHTF - array.get(MQD, 1) * mSig), f_ls(wmStyle))
-    true
-if showMonth and intraday and timeframe.change("M") and not na(mSig)
-    f_blk6()
 
 int myBlk = int(math.floor(hrIdx / 4))
 bool newBlk = intraday and timeframe.in_seconds() <= 3600 and (myBlk != myBlk[1] or newDay)
@@ -2391,3 +2313,70 @@ f_minimal() =>
     true
 if barstate.islast and minimal
     f_minimal()
+
+
+// ─────────────────────────────────────────────────────────── Asia stat boxes (drawn at the Asia open)
+// Where the Asia high / low land from the session open (x daily HAR): darker = middle 50% of sessions, lighter = out to
+// the 90% edge; Monday (Sunday 18:00 open) runs bigger. research/asia_zones.py: 2010-18 bands covered 44-61% of 2019-26
+// sessions (target 50), the 90% edge held 82-95%.
+var array<box> asQ = array.new<box>()
+var array<line> asL = array.new<line>()
+var array<label> asLb = array.new<label>()
+f_asiaBoxes(int aStart) =>
+    bool mon = dayofweek(time_tradingday, "UTC") == dayofweek.monday
+    int k = (aStart == 1080 ? 0 : 8) + (mon ? 4 : 0)
+    array<float> z = f_asiaZ(S)
+    int aEnd = time + (1440 - aStart) * 60000
+    float o = open
+    for sd = 0 to 1
+        float sg = sd == 0 ? 1.0 : -1.0
+        float q25 = o + sg * array.get(z, k) * dHar
+        float q50 = o + sg * array.get(z, k + 1) * dHar
+        float q75 = o + sg * array.get(z, k + 2) * dHar
+        float q90 = o + sg * array.get(z, k + 3) * dHar
+        array.push(asQ, box.new(time, math.max(q25, q75), aEnd, math.min(q25, q75), xloc = xloc.bar_time, border_color = color.new(asiaCol, 35), border_width = 1, bgcolor = color.new(asiaCol, 93)))
+        array.push(asL, line.new(time, q90, aEnd, q90, xloc = xloc.bar_time, color = color.new(asiaCol, 40), style = line.style_dotted))
+        array.push(asL, line.new(time, q50, aEnd, q50, xloc = xloc.bar_time, color = color.new(asiaCol, 0), width = 2))
+    while array.size(asQ) > sessDays * 2
+        box.delete(array.shift(asQ))
+    while array.size(asL) > sessDays * 4
+        line.delete(array.shift(asL))
+    while array.size(asLb) > daysBack * 2
+        label.delete(array.shift(asLb))
+    true
+// ─────────────────────────────────────────────────────────── 17:00 close: clear the day's session / OR / AM-zone drawings
+f_clearDay() =>
+    for b in sQ
+        box.delete(b)
+    for b in oQ
+        box.delete(b)
+    for b in amzQ
+        box.delete(b)
+    for b in asQ
+        box.delete(b)
+    for l in oLQ
+        line.delete(l)
+    for l in amzL
+        line.delete(l)
+    for l in asL
+        line.delete(l)
+    for l in sL
+        label.delete(l)
+    for l in oLbQ
+        label.delete(l)
+    array.clear(sQ)
+    array.clear(oQ)
+    array.clear(amzQ)
+    array.clear(asQ)
+    array.clear(oLQ)
+    array.clear(amzL)
+    array.clear(asL)
+    array.clear(sL)
+    array.clear(oLbQ)
+    true
+if startOf(1020)
+    f_clearDay()
+
+int asStart = asiaStat == "18:00-0:00" ? 1080 : 1200
+if asiaStat != "Off" and showTags and intraday and timeframe.in_seconds() <= 3600 and not na(dHar) and startOf(asStart)
+    f_asiaBoxes(asStart)

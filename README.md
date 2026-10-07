@@ -9,7 +9,7 @@ Free, open-source Pine Script v6 indicator. The chart short title is **HTF Zones
 - Daily percentile zones anchored to the 18:00 New York open.
 - AM, midday, and PM session zones and 15/30-minute opening ranges.
 - Historical target estimates, prior-day and overnight levels, and invalidation levels.
-- Optional weekly, monthly, and four-hour levels, a statistics table, and minimal mode.
+- Asia stat boxes (where the Asia high / low usually lands), optional four-hour levels, a statistics table, and minimal mode.
 - Statistics sets for NQ/MNQ, ES/MES, YM/MYM, and GC/MGC.
 
 ## Use in TradingView
@@ -25,7 +25,7 @@ No Whop subscription or invite-only approval is required to use this source.
 
 This release preserves the owner's supplied `HTF_Statistical_Zones.pine` file byte for byte, including its embedded statistical constants. It is a standalone Pine script; you do not need the research scripts or the assembly tool mentioned in the source comments to install it. The research pipeline and market-data datasets are not included in this repository.
 
-SHA-256: `0cb41526134bdccbfa6dea456eda67a3b6b4c9206fa0b97f22dfa76896489717`
+SHA-256: `1c241a2e1a7d24acf2299ae2d82686ce0e4eaf3bf5be1dd3fdab8b53952b7166`
 
 Historical percentages are estimates, not promises of future outcomes. This publication does not independently validate the source's research claims. Pine Script runs on TradingView; GitHub preserves the code independently.
 
